@@ -1,0 +1,20 @@
+default: hello.exe
+
+internal.obj hello-internal.ifc: internal.cppm
+	cl /nologo /EHsc /std:c++20 /c /TP /internalPartition internal.cppm
+
+interface.obj hello-interface.ifc: interface.cppm hello-internal.ifc
+	cl /nologo /EHsc /std:c++20 /c /TP /interface interface.cppm
+
+hello.obj hello.ifc: hello.ixx hello-interface.ifc
+	cl /nologo /EHsc /std:c++20 /c hello.ixx
+
+main.obj: main.cpp hello.ifc
+	cl /nologo /EHsc /std:c++20 /c main.cpp
+
+hello.exe: main.obj hello.obj interface.obj internal.obj
+	cl /nologo main.obj hello.obj interface.obj internal.obj /Fe:hello
+
+clean:
+	-del *.ifc *.obj *.exe
+	-rm  *.ifc *.obj *.exe

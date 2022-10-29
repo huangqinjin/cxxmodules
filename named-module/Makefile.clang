@@ -1,0 +1,20 @@
+# https://clang.llvm.org/docs/StandardCPlusPlusModules.html
+# BMI: Built Module Interface
+
+default: hello.exe
+
+hello.pcm: hello.cppm
+	clang++ -std=c++20 --precompile hello.cppm
+
+hello.o: hello.pcm
+	clang++ -std=c++20 -c hello.pcm
+
+main.o: main.cpp hello.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp
+
+hello.exe: main.o hello.o
+	clang++ main.o hello.o -o hello.exe
+
+clean:
+	-rm  *.pcm *.o *.exe
+	-del *.pcm *.o *.exe

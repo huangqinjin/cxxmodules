@@ -1,0 +1,14 @@
+default: hello.exe
+
+hello.hpp.ifc: hello.hpp
+	cl /nologo /EHsc /std:c++20 /exportHeader /headerName:quote hello.hpp
+
+iostream.ifc:
+	cl /nologo /EHsc /std:c++20 /exportHeader /headerName:angle iostream
+
+hello.exe: main.cpp hello.hpp.ifc iostream.ifc
+	cl /nologo /EHsc /std:c++20 /headerUnit:quote hello.hpp=hello.hpp.ifc /headerUnit:angle iostream=iostream.ifc /Fe:hello main.cpp
+
+clean:
+	-del *.ifc *.obj *.exe
+	-rm  *.ifc *.obj *.exe

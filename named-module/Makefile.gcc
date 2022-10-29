@@ -1,0 +1,23 @@
+# https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Modules.html
+# No new source file suffixes are required or supported. `-x c++` is required for `.cppm`.
+
+# https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html
+# CMI: Compiled Module Interface
+
+default-mapper:   # -fmodule-mapper='|@g++-mapper-server -r gcm.cache'
+	g++ -std=c++20 -fmodules-ts -x c++ hello.cppm main.cpp -o hello.exe
+
+custom-mapper:
+	g++ -std=c++20 -fmodules-ts -fmodule-mapper='|@g++-mapper-server -r.' -x c++ hello.cppm main.cpp -o hello.exe
+
+hello.o gcm.cache/hello.gcm: hello.cppm
+	g++ -std=c++20 -fmodules-ts -c -x c++ hello.cppm
+
+main.o: main.cpp gcm.cache/hello.gcm
+	g++ -std=c++20 -fmodules-ts -c main.cpp
+
+hello.exe: main.o hello.o
+	g++ main.o hello.o -o hello.exe
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe

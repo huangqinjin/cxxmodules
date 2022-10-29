@@ -1,0 +1,13 @@
+default: hello.exe
+
+hello.gcm: hello.hpp
+	g++ -std=c++20 -fmodule-header hello.hpp
+
+iostream.gcm:
+	g++ -std=c++20 -fmodules-ts -x c++-system-header iostream
+
+hello.exe: main.cpp hello.gcm iostream.gcm
+	g++ -std=c++20 -fmodules-ts main.cpp -o hello.exe
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe

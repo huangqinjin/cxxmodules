@@ -1,0 +1,20 @@
+default:
+	g++ -std=c++20 -fmodules-ts -x c++ internal.cppm interface.cppm hello.ixx main.cpp -o hello.exe
+
+internal.o gcm.cache/hello-internal.gcm: internal.cppm
+	g++ -std=c++20 -fmodules-ts -c -x c++ internal.cppm
+
+interface.o gcm.cache/hello-interface.gcm: interface.cppm gcm.cache/hello-internal.gcm
+	g++ -std=c++20 -fmodules-ts -c -x c++ interface.cppm
+
+hello.o gcm.cache/hello.gcm: hello.ixx gcm.cache/hello-interface.gcm
+	g++ -std=c++20 -fmodules-ts -c -x c++ hello.ixx	
+
+main.o: main.cpp gcm.cache/hello.gcm
+	g++ -std=c++20 -fmodules-ts -c main.cpp
+
+hello.exe: main.o hello.o interface.o internal.o
+	g++ main.o hello.o interface.o internal.o -o hello.exe
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe

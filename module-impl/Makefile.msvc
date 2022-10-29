@@ -1,0 +1,18 @@
+default:
+	cl /nologo /EHsc /std:c++20 hello.ixx impl.cpp main.cpp /Fe:hello
+
+hello.obj hello.ifc: hello.ixx
+	cl /nologo /EHsc /std:c++20 /c hello.ixx
+
+impl.obj: impl.cpp hello.ifc
+	cl /nologo /EHsc /std:c++20 /c impl.cpp
+
+main.obj: hello.ifc main.cpp
+	cl /nologo /EHsc /std:c++20 /c main.cpp
+
+hello.exe: main.obj hello.obj impl.obj
+	cl /nologo main.obj hello.obj impl.obj /Fe:hello
+
+clean:
+	-del *.ifc *.obj *.exe
+	-rm  *.ifc *.obj *.exe

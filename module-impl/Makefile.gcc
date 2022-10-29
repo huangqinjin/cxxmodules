@@ -1,0 +1,17 @@
+default:
+	g++ -std=c++20 -fmodules-ts -x c++ hello.ixx impl.cpp main.cpp -o hello.exe
+
+hello.o gcm.cache/hello.gcm: hello.ixx
+	g++ -std=c++20 -fmodules-ts -c -x c++ hello.ixx
+
+impl.o: impl.cpp gcm.cache/hello.gcm
+	g++ -std=c++20 -fmodules-ts -c impl.cpp
+
+main.o: main.cpp gcm.cache/hello.gcm
+	g++ -std=c++20 -fmodules-ts -c main.cpp
+
+hello.exe: main.o hello.o impl.o
+	g++ main.o hello.o impl.o -o hello.exe
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe

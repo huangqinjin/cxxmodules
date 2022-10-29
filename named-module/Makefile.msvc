@@ -1,0 +1,18 @@
+default-mapper:
+	cl /nologo /EHsc /std:c++20 /TP /interface hello.cppm main.cpp /Fe:hello
+
+custom-mapper:
+	cl /nologo /EHsc /std:c++20 /ifcSearchDir . /ifcOutput . /TP /interface hello.cppm main.cpp /Fe:hello
+
+hello.obj hello.ifc: hello.cppm
+	cl /nologo /EHsc /std:c++20 /c /TP /interface hello.cppm
+
+main.obj: main.cpp hello.ifc
+	cl /nologo /EHsc /std:c++20 /c main.cpp
+
+hello.exe: main.obj hello.obj
+	cl /nologo main.obj hello.obj /Fe:hello
+
+clean:
+	-del *.ifc *.obj *.exe
+	-rm  *.ifc *.obj *.exe

@@ -1,0 +1,29 @@
+default: hello.exe
+
+hello-internal.pcm: internal.cppm
+	clang++ -std=c++20 --precompile internal.cppm -o hello-internal.pcm
+
+internal.o: hello-internal.pcm
+	clang++ -std=c++20 -c hello-internal.pcm -o internal.o
+
+hello-interface.pcm: interface.cppm hello-internal.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. --precompile interface.cppm -o hello-interface.pcm
+
+interface.o: hello-interface.pcm
+	clang++ -std=c++20 -c hello-interface.pcm -o interface.o
+
+hello.pcm: hello.ixx hello-interface.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. --precompile -x c++-module hello.ixx
+
+hello.o: hello.pcm
+	clang++ -std=c++20 -c hello.pcm
+
+main.o: main.cpp hello.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp
+
+hello.exe: main.o hello.o interface.o internal.o
+	clang++ main.o hello.o interface.o internal.o -o hello.exe
+
+clean:
+	-rm  *.pcm *.o *.exe
+	-del *.pcm *.o *.exe
