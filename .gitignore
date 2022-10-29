@@ -1,0 +1,13 @@
+.vs/
+.idea/
+.vscode/
+build/
+cmake-build-*/
+CMakeUserPresets.json
+
+*.o
+*.obj
+*.ifc
+*.pcm
+*.gcm
+*.exe
