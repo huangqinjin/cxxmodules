@@ -2,5 +2,8 @@
     "files.associations": {
         "*.ixx": "cpp",
         "*.cppm": "cpp",
-    }
+    },
+    "cmake.preferredGenerators": [
+        "Ninja"
+    ],
 }
