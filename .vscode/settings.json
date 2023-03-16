@@ -6,4 +6,5 @@
     "cmake.preferredGenerators": [
         "Ninja"
     ],
+    "cmake.buildDirectory": "${workspaceFolder}/cmake-build-${buildKit}",
 }
