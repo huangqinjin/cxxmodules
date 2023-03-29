@@ -4,6 +4,20 @@ project(cxxmodules)
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API 2182bf5c-ef0d-489a-91da-49dbc3090d2a)
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    string(CONCAT CMAKE_EXPERIMENTAL_CXX_SCANDEP_SOURCE
+      "clang-scan-deps"
+      " -format=p1689"
+      " --"
+      " <CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS>"
+      " -x c++ <SOURCE> -c -o <OBJECT>"
+      " -MT <DYNDEP_FILE>"
+      " -MD -MF <DEP_FILE>"
+      " > <DYNDEP_FILE>")
+    set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FORMAT "gcc")
+    set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FLAG "-fmodules-ts -Mno-modules -fmodule-mapper=<MODULE_MAP_FILE> -x c++")
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
