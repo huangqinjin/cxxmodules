@@ -7,7 +7,7 @@ add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
   PRIVATE
     main.cpp
-  PRIVATE FILE_SET CXX_MODULE_HEADER_UNITS FILES
+  PUBLIC FILE_SET CXX_MODULE_HEADER_UNITS FILES
     "hello.hpp"
     #<iostream>
 )

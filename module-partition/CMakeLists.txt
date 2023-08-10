@@ -7,7 +7,7 @@ add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
   PRIVATE
     main.cpp
-  PRIVATE FILE_SET CXX_MODULES FILES
+  PUBLIC FILE_SET CXX_MODULES FILES
     hello.ixx
     interface.cppm
     internal.cppm
