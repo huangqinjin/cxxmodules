@@ -1,9 +1,5 @@
 module;
 
-#if defined(__clang__)
-#define __cpp_consteval 201811L
-#endif
-
 #include <iostream>
 #include <source_location>
 
