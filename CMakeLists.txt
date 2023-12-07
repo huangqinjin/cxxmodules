@@ -1,10 +1,8 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.28)
 project(cxxmodules)
 
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API aa1f7df0-828a-4fcd-9afc-2dc80491aca7)
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    string(CONCAT CMAKE_EXPERIMENTAL_CXX_SCANDEP_SOURCE
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.0)
+    string(CONCAT CMAKE_CXX_SCANDEP_SOURCE
       "clang-scan-deps"
       " -format=p1689"
       " --"
@@ -12,9 +10,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
       " -x c++ <SOURCE> -c -o <OBJECT>"
       " -MT <DYNDEP_FILE>"
       " -MD -MF <DEP_FILE>"
-      " > <DYNDEP_FILE>")
-    set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FORMAT "gcc")
-    set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FLAG "-fmodules-ts -Mno-modules -fmodule-mapper=<MODULE_MAP_FILE> -x c++")
+      " > <DYNDEP_FILE>.tmp"
+      " && \"${CMAKE_COMMAND}\" -E rename <DYNDEP_FILE>.tmp <DYNDEP_FILE>")
+    set(CMAKE_CXX_MODULE_MAP_FORMAT "gcc")
+    set(CMAKE_CXX_MODULE_MAP_FLAG "-fmodules-ts -Mno-modules -fmodule-mapper=<MODULE_MAP_FILE> -x c++")
+    set(CMAKE_CXX_MODULE_BMI_ONLY_FLAG "-fmodule-only")
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
