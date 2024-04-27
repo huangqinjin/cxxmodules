@@ -1,0 +1,16 @@
+CLANG_DIR_CMD = $(PREFIX)clang++ -print-resource-dir
+STD_CPPM_LOC = /../../../share/libc++/v1/std.cppm
+
+hello.exe: main.cpp std.o std.pcm
+	$(PREFIX)clang++ -stdlib=libc++ -std=c++23 -fprebuilt-module-path=. main.cpp std.o -o hello.exe
+
+std.o std.pcm: std.cppm.o
+	$(PREFIX)clang++ -stdlib=libc++ -std=c++23 -fmodule-output=std.pcm -c @std.cppm.o -Wno-reserved-module-identifier
+
+std.cppm.o:
+	-FOR /F "delims=" %%i IN ('$(CLANG_DIR_CMD)') DO @echo %%i$(STD_CPPM_LOC) >> std.cppm.o
+	-printf `$(CLANG_DIR_CMD)`$(STD_CPPM_LOC) >> std.cppm.o
+
+clean:
+	-rm  *.pcm *.o *.exe
+	-del *.pcm *.o *.exe

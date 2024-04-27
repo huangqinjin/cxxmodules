@@ -35,4 +35,23 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         BASE_DIRS ${modules}
         FILES ${modules}/std.ixx
     )
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    include(CheckCXXSymbolExists)
+    check_cxx_symbol_exists(_LIBCPP_VERSION version libcxx)
+    if(libcxx)
+        find_path(modules REQUIRED
+            NAMES
+              std.cppm
+            PATH_SUFFIXES
+              share/libc++/v1
+            PATHS
+              "${CMAKE_CXX_COMPILER}/../.."
+            NO_DEFAULT_PATH
+        )
+        target_sources(${PROJECT_NAME} PUBLIC FILE_SET CXX_MODULES
+            BASE_DIRS ${modules}
+            FILES ${modules}/std.cppm
+        )
+        target_compile_options(${PROJECT_NAME} PRIVATE -Wno-reserved-module-identifier)
+    endif()
 endif()
