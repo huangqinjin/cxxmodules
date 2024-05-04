@@ -1,0 +1,16 @@
+hello.exe: main.cpp hello.lib hello.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. \
+	-Xclang -fno-dllexport-inlines \
+	-g -gcodeview -Wl,/PDB:hello.exe.pdb -Wl,/INCREMENTAL:NO \
+	main.cpp -o hello.exe hello.lib -Wl,/NOIMPLIB
+
+hello.dll hello.lib hello.pcm: hello.ixx hello.hpp impl.cpp
+	clang++ -std=c++20 -fprebuilt-module-path=. -fmodule-output -shared \
+	-Xclang -fno-dllexport-inlines \
+	-g -gcodeview -Wl,/PDB:hello.dll.pdb -Wl,/INCREMENTAL:NO \
+	-x c++-module hello.ixx -x c++ impl.cpp -o hello.dll
+
+clean:
+	-rm  *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
+	-del *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
+

@@ -1,0 +1,11 @@
+hello.exe: main.cpp libhello.so gcm.cache/hello.gcm
+	g++ -std=c++20 -fmodules-ts -g main.cpp -o hello.exe libhello.so -Wl,-rpath,. -Wl,--wrap=_ZGIW5hello
+
+libhello.so gcm.cache/hello.gcm: hello.ixx hello.hpp impl.cpp
+	g++ -std=c++20 -fmodules-ts -g -shared -fPIC \
+	-fvisibility=hidden -fvisibility-inlines-hidden \
+	-x c++ hello.ixx impl.cpp -o libhello.so
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe *.so
+

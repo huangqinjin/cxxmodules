@@ -11,3 +11,10 @@ CMakeUserPresets.json
 *.pcm
 *.gcm
 *.exe
+*.exp
+*.lib
+*.dll
+*.pdb
+*.a
+*.so
+*.dylib

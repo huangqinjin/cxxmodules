@@ -1,0 +1,15 @@
+hello.exe: main.cpp hello.dll hello.pcm
+	$(PREFIX)clang++ -fms-extensions -std=c++20 -fprebuilt-module-path=. \
+	-g -gcodeview -Wl,--pdb=hello.exe.pdb \
+	main.cpp -o hello.exe -L. -lhello
+
+hello.dll hello.pcm: hello.ixx hello.hpp impl.cpp
+	$(PREFIX)clang++ -fms-extensions -std=c++20 -fprebuilt-module-path=. -fmodule-output -shared \
+	-fvisibility=hidden -fvisibility-inlines-hidden \
+	-g -gcodeview -Wl,--pdb=hello.dll.pdb \
+	-x c++-module hello.ixx -x c++ impl.cpp -o hello.dll
+
+clean:
+	-rm  *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
+	-del *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
+

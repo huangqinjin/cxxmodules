@@ -1,0 +1,12 @@
+hello.exe: main.cpp libhello.so hello.pcm
+	clang++ -std=c++20 -g -fprebuilt-module-path=. main.cpp -o hello.exe libhello.so -Wl,-rpath,.
+
+libhello.so hello.pcm: hello.ixx hello.hpp impl.cpp
+	clang++ -std=c++20 -g -fprebuilt-module-path=. -fmodule-output -shared -fPIC \
+	-fvisibility=hidden -fvisibility-inlines-hidden \
+	-x c++-module hello.ixx -x c++ impl.cpp -o libhello.so
+
+clean:
+	-rm  *.pcm *.o *.exe *.so
+	-del *.pcm *.o *.exe *.so
+

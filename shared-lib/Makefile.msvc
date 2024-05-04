@@ -1,0 +1,10 @@
+hello.exe: main.cpp hello.lib hello.ifc
+	cl /nologo /EHsc /std:c++20 main.cpp hello.lib /Fe:hello /Zi /link /PDB:hello.exe.pdb /INCREMENTAL:NO /NOIMPLIB /NOEXP
+
+hello.dll hello.lib hello.ifc: hello.ixx hello.hpp impl.cpp
+	cl /nologo /EHsc /std:c++20 /LD hello.ixx impl.cpp /Zi /link /PDB:hello.dll.pdb
+
+clean:
+	-del *.ifc *.obj *.exe *.exp *.lib *.dll *.pdb
+	-rm  *.ifc *.obj *.exe *.exp *.lib *.dll *.pdb
+
