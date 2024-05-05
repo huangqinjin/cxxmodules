@@ -1,8 +1,11 @@
 #pragma once
 
-#ifdef _MSC_VER
-template<typename = void>
+#ifdef MAIN
+#error "Macros defined outside header units must be invisible"
 #endif
+
+#define HELLO
+
 inline const char* hello()
 {
     return "Hello, World!";
