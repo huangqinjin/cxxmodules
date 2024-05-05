@@ -1,0 +1,166 @@
+{
+  "version": 5,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 26,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/cmake-build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "gcc",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "clang",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "environment": {
+        "CXXFLAGS": "--start-no-unused-arguments -stdlib=libc++ --end-no-unused-arguments $penv{CXXFLAGS}"
+      }
+    },
+    {
+      "name": "clang-cl",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl",
+        "CMAKE_MT": "llvm-mt"
+      }
+    },
+    {
+      "name": "x-clang-cl",
+      "inherits": "clang-cl",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER_TARGET": "x86_64-pc-windows-msvc",
+        "CMAKE_CXX_COMPILER_TARGET": "x86_64-pc-windows-msvc",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_VERSION": "10",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine64"
+      },
+      "environment": {
+        "CFLAGS": "-winsysroot /opt/msvc $penv{CFLAGS}",
+        "CXXFLAGS": "-winsysroot /opt/msvc $penv{CXXFLAGS}",
+        "LDFLAGS": "-winsysroot:/opt/msvc $penv{LDFLAGS}"
+      },
+      "condition": {
+        "string": "${hostSystemName}",
+        "type": "notInList",
+        "list" : [
+          "Windows"
+        ]
+      }
+    },
+    {
+      "name": "msvc-wine",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/opt/msvc/bin/x64/cl.exe",
+        "CMAKE_CXX_COMPILER": "/opt/msvc/bin/x64/cl.exe",
+        "CMAKE_RC_COMPILER": "/opt/msvc/bin/x64/rc.exe",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+        "CMAKE_MSVC_DEBUG_INFORMATION_FORMAT": "$<$<CONFIG:Debug,RelWithDebInfo>:$<IF:$<STREQUAL:${hostSystemName},Darwin>,Embedded,ProgramDatabase>>",
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_VERSION": "10",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine64"
+      },
+      "condition": {
+        "string": "${hostSystemName}",
+        "type": "notInList",
+        "list" : [
+          "Windows"
+        ]
+      }
+    },
+    {
+      "name": "x-mingw-gcc",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "x86_64-w64-mingw32-gcc",
+        "CMAKE_CXX_COMPILER": "x86_64-w64-mingw32-g++",
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_VERSION": "10",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/bin;WINEDEBUG=-all;wine64"
+      },
+      "condition": {
+        "string": "${hostSystemName}",
+        "type": "notInList",
+        "list" : [
+          "Windows"
+        ]
+      }
+    },
+    {
+      "name": "msys",
+      "inherits": "default",
+      "environment": {
+        "MSYSTEM_PREFIX": "/usr",
+        "MSYSTEM_PATH": "C:/msys64$env{MSYSTEM_PREFIX}/bin",
+        "PATH": "$env{MSYSTEM_PATH}${pathListSep}$penv{PATH}"
+      },
+      "condition": {
+        "string": "${hostSystemName}",
+        "type": "inList",
+        "list" : [
+          "Windows"
+        ]
+      }
+    },
+    {
+      "name": "mingw-w64",
+      "inherits": "msys",
+      "environment": {
+        "MSYSTEM_PREFIX": "/mingw64"
+      }
+    },
+    {
+      "name": "mingw-ucrt64",
+      "inherits": "msys",
+      "environment": {
+        "MSYSTEM_PREFIX": "/ucrt64"
+      }
+    },
+    {
+      "name": "mingw-clang64",
+      "inherits": "msys",
+      "environment": {
+        "MSYSTEM_PREFIX": "/clang64"
+      }
+    },
+    {
+      "name": "msbuild",
+      "inherits": "default",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "toolset": "host=x64",
+      "condition": {
+        "string": "${hostSystemName}",
+        "type": "inList",
+        "list" : [
+          "Windows"
+        ]
+      }
+    },
+    {
+      "name": "msbuild-clang",
+      "inherits": "msbuild",
+      "toolset": "ClangCL"
+    }
+  ]
+}
