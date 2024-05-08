@@ -1,0 +1,8 @@
+hello.exe: main.cpp
+	clang-cl /EHsc /std:c++latest -Wno-reserved-module-identifier -Wno-include-angled-in-module-purview \
+	/clang:-fprebuilt-module-path=. /clang:-fmodule-output \
+	-I"$(VCTOOLSINSTALLDIR)/" std.cppm main.cpp /Fe:hello $(CXXFLAGS)
+
+clean:
+	-del *.pcm *.obj *.exe
+	-rm  *.pcm *.obj *.exe

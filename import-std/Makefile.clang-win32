@@ -1,0 +1,8 @@
+hello.exe: main.cpp
+	clang++ -std=c++23 -Wno-reserved-module-identifier -Wno-include-angled-in-module-purview \
+	-fprebuilt-module-path=. -fmodule-output=std.pcm \
+	-x c++-module "$(VCTOOLSINSTALLDIR)/modules/std.ixx" -x c++ main.cpp -o hello.exe
+
+clean:
+	-del *.pcm *.o *.exe
+	-rm  *.pcm *.o *.exe
