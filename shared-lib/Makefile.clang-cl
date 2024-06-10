@@ -1,12 +1,12 @@
 hello.exe: main.cpp hello.lib hello.pcm
-	clang-cl /std:c++20 /clang:-fprebuilt-module-path=. \
+	clang-cl /std:c++20 -fprebuilt-module-path=. \
 	/Zc:dllexportInlines- \
 	main.cpp /Fe:hello.exe hello.lib $(CXXFLAGS) /Zi /link /PDB:hello.exe.pdb /INCREMENTAL:NO
 
 hello.dll hello.lib hello.pcm: hello.ixx
-	clang-cl /std:c++20 /clang:-fprebuilt-module-path=. /clang:-fmodule-output /LD \
+	clang-cl /std:c++20 -fprebuilt-module-path=. -fmodule-output /LD \
 	/Zc:dllexportInlines- \
-	hello.cppm impl.cpp $(CXXFLAGS) /Zi /link /PDB:hello.dll.pdb
+	-x c++-module hello.ixx -x c++ impl.cpp $(CXXFLAGS) /Zi /link /PDB:hello.dll.pdb
 
 clean:
 	-rm  *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb
