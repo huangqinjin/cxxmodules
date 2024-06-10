@@ -6,7 +6,7 @@ hello.exe: main.cpp hello.lib hello.pcm
 hello.dll hello.lib hello.pcm: hello.ixx
 	clang-cl /std:c++20 /clang:-fprebuilt-module-path=. /clang:-fmodule-output /LD \
 	/Zc:dllexportInlines- \
-	hello.cppm impl.cpp $(CXXFLAGS) /Zi /link /PDB:hello.dll.pdb
+	-x c++-module hello.ixx -x c++ impl.cpp $(CXXFLAGS) /Zi /link /PDB:hello.dll.pdb
 
 clean:
 	-rm  *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb
