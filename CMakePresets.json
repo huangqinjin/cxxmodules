@@ -53,7 +53,7 @@
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
         "CMAKE_SYSTEM_NAME": "Windows",
         "CMAKE_SYSTEM_VERSION": "10",
-        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine64"
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine"
       },
       "environment": {
         "CFLAGS": "-winsysroot /opt/msvc $penv{CFLAGS}",
@@ -79,7 +79,7 @@
         "CMAKE_MSVC_DEBUG_INFORMATION_FORMAT": "$<$<CONFIG:Debug,RelWithDebInfo>:$<IF:$<STREQUAL:${hostSystemName},Darwin>,Embedded,ProgramDatabase>>",
         "CMAKE_SYSTEM_NAME": "Windows",
         "CMAKE_SYSTEM_VERSION": "10",
-        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine64"
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine"
       },
       "condition": {
         "string": "${hostSystemName}",
@@ -97,7 +97,7 @@
         "CMAKE_CXX_COMPILER": "x86_64-w64-mingw32-g++",
         "CMAKE_SYSTEM_NAME": "Windows",
         "CMAKE_SYSTEM_VERSION": "10",
-        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/bin;WINEDEBUG=-all;wine64"
+        "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/bin;WINEDEBUG=-all;wine"
       },
       "condition": {
         "string": "${hostSystemName}",

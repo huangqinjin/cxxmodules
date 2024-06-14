@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          zypper -n in wine msitools awk cmake ninja make gcc14-c++ clang lld libc++-devel
+          zypper -n in wine-wow64 msitools awk cmake ninja make gcc14-c++ clang lld libc++-devel
           ln -s /usr/bin/gcc-14 /usr/local/bin/gcc
           ln -s /usr/bin/g++-14 /usr/local/bin/g++
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
@@ -49,10 +49,10 @@ jobs:
         run: cmake -P workflow.cmake -- clang
 
       - name: clang-cl
-        run: make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine64 "
+        run: make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: msvc-wine
-        run: PATH=/opt/msvc/bin/x64:$PATH make msvc LAUNCHER="WINEDEBUG=-all wine64 " VCTOOLSINSTALLDIR=/opt/msvc
+        run: PATH=/opt/msvc/bin/x64:$PATH make msvc LAUNCHER="WINEDEBUG=-all wine " VCTOOLSINSTALLDIR=/opt/msvc
 
       - name: cmake msvc-wine
         run: cmake -P workflow.cmake -- msvc-wine
