@@ -21,9 +21,6 @@ jobs:
           ln -s /usr/bin/g++-14 /usr/local/bin/g++
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
-          curl -o cmake.sh -fsSL https://cmake.org/files/dev/cmake-3.29.20240517-g5e9235f-linux-x86_64.sh
-          chmod +x cmake.sh && ./cmake.sh --skip-license --prefix=/usr/local
-
       - name: Checkout msvc-wine
         uses: actions/checkout@v4
         with:
@@ -76,9 +73,6 @@ jobs:
           rename %1 %~nx1.bat
           %1.bat
           "@
-
-          Invoke-WebRequest -OutFile cmake.msi https://cmake.org/files/dev/cmake-3.29.20240517-g5e9235f-windows-x86_64.msi
-          Start-Process -NoNewWindow -Wait msiexec "/i cmake.msi /qn"
 
       - uses: msys2/setup-msys2@v2
         with:
