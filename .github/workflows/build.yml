@@ -21,6 +21,17 @@ jobs:
           ln -s /usr/bin/g++-14 /usr/local/bin/g++
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
+      - name: Checkout compiler-explorer/infra
+        uses: actions/checkout@v4
+        with:
+          repository: compiler-explorer/infra
+
+      - name: Install compilers
+        run: >
+          make ce && bin/ce_install --enable nightly --filter-match-any install
+          'compilers/c++/nightly/gcc trunk'
+          'compilers/c++/nightly/clang trunk'
+
       - name: Checkout msvc-wine
         uses: actions/checkout@v4
         with:
