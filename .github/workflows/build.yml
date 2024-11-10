@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          zypper -n in wine-wow64 msitools awk cmake ninja make gcc-c++ clang lld libc++-devel
+          zypper -n in wine-wow64 msitools awk cmake ninja make gcc-c++ llvm clang lld libc++-devel
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
       - name: Checkout msvc-wine
