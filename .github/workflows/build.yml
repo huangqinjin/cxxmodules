@@ -19,6 +19,17 @@ jobs:
           zypper -n in wine-wow64 msitools awk cmake ninja make gcc-c++ llvm clang lld libc++-devel
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
+      - name: Checkout compiler-explorer/infra
+        uses: actions/checkout@v4
+        with:
+          repository: compiler-explorer/infra
+
+      - name: Install compilers
+        run: >
+          make ce && bin/ce_install --enable nightly --filter-match-any install
+          'compilers/c++/nightly/gcc trunk'
+          'compilers/c++/nightly/clang trunk'
+
       - name: Checkout msvc-wine
         uses: actions/checkout@v4
         with:
@@ -51,6 +62,55 @@ jobs:
 
       - name: clang-cl
         run: make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
+
+      - name: gcc snapshot
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/gcc-snapshot/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(gcc -print-file-name=libstdc++.so)):$LD_LIBRARY_PATH
+          make gcc LAUNCHER=./
+
+      - name: cmake gcc snapshot
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/gcc-snapshot/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(gcc -print-file-name=libstdc++.so)):$LD_LIBRARY_PATH
+          cmake -P workflow.cmake -- gcc
+
+      - name: clang trunk
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
+          make clang LAUNCHER=./
+
+      - name: cmake clang trunk
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
+          cmake -P workflow.cmake -- clang
+
+      - name: clang-win32 trunk
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
+          make clang-win32 CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
+
+      - name: cmake x-clang-win32 trunk
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
+          cmake -P workflow.cmake -- x-clang-win32
+
+      - name: clang-cl trunk
+        continue-on-error: true
+        run: |
+          export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
+          export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
+          make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: msvc-wine
         run: PATH=/opt/msvc/bin/x64:$PATH make msvc LAUNCHER="WINEDEBUG=-all wine " VCTOOLSINSTALLDIR=/opt/msvc
