@@ -43,6 +43,12 @@ jobs:
       - name: cmake clang
         run: cmake -P workflow.cmake -- clang
 
+      - name: clang-win32
+        run: make clang-win32 CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
+
+      - name: cmake x-clang-win32
+        run: cmake -P workflow.cmake -- x-clang-win32
+
       - name: clang-cl
         run: make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
 

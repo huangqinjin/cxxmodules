@@ -1,23 +1,23 @@
 #default:
 #	The default -fmodule-output of partitions are not same as used by -fprebuilt-module-path.
-#	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. internal.cppm interface.cppm -x c++-module hello.ixx -x c++ main.cpp -o hello.exe
+#	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. internal.cppm interface.cppm -x c++-module hello.ixx -x c++ main.cpp -o hello.exe $(CXXFLAGS)
 
 default: hello.exe
 
 internal.o hello-internal.pcm: internal.cppm
-	clang++ -std=c++20 -c internal.cppm -fmodule-output=hello-internal.pcm
+	clang++ -std=c++20 -c internal.cppm -fmodule-output=hello-internal.pcm $(CXXFLAGS)
 
 interface.o hello-interface.pcm: interface.cppm hello-internal.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c interface.cppm -fmodule-output=hello-interface.pcm
+	clang++ -std=c++20 -fprebuilt-module-path=. -c interface.cppm -fmodule-output=hello-interface.pcm $(CXXFLAGS)
 
 hello.o hello.pcm: hello.ixx hello-interface.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c -x c++-module hello.ixx -fmodule-output
+	clang++ -std=c++20 -fprebuilt-module-path=. -c -x c++-module hello.ixx -fmodule-output $(CXXFLAGS)
 
 main.o: main.cpp hello.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp
+	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp $(CXXFLAGS)
 
 hello.exe: main.o hello.o interface.o internal.o
-	clang++ main.o hello.o interface.o internal.o -o hello.exe
+	clang++ main.o hello.o interface.o internal.o -o hello.exe $(CXXFLAGS)
 
 clean:
 	-rm  *.pcm *.o *.exe

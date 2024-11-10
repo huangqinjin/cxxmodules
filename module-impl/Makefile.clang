@@ -1,17 +1,17 @@
 default:
-	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. -x c++-module hello.ixx -x c++ impl.cpp main.cpp -o hello.exe
+	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. -x c++-module hello.ixx -x c++ impl.cpp main.cpp -o hello.exe $(CXXFLAGS)
 
 hello.o hello.pcm: hello.ixx
-	clang++ -std=c++20 -fmodule-output -c -x c++-module hello.ixx
+	clang++ -std=c++20 -fmodule-output -c -x c++-module hello.ixx $(CXXFLAGS)
 
 impl.o: impl.cpp hello.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c impl.cpp
+	clang++ -std=c++20 -fprebuilt-module-path=. -c impl.cpp $(CXXFLAGS)
 
 main.o: main.cpp hello.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp
+	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp $(CXXFLAGS)
 
 hello.exe: main.o hello.o impl.o
-	clang++ main.o hello.o impl.o -o hello.exe
+	clang++ main.o hello.o impl.o -o hello.exe $(CXXFLAGS)
 
 clean:
 	-rm  *.pcm *.o *.exe

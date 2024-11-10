@@ -1,17 +1,15 @@
 default: hello.exe
 
 hello.pcm: hello.hpp
-	clang-cl /std:c++20 /clang:--precompile /clang:-fmodule-header hello.hpp $(CXXFLAGS)
+	clang-cl /std:c++20 --precompile -fmodule-header hello.hpp $(CXXFLAGS)
 
 iostream.pcm:
-	clang-cl /std:c++20 /clang:--precompile -x c++-system-header iostream $(CXXFLAGS) && \
-	echo /clang:-fmodule-file=iostream.pcm > modules.obj || \
-	echo "" > modules.obj
+	clang-cl /std:c++20 --precompile -x c++-system-header iostream $(CXXFLAGS)
 
 hello.exe: main.cpp hello.pcm iostream.pcm
 ##### Only -fmodule-file=.pcm works for header units.
 ##### With the existing implementation -fprebuilt-module-path cannot be used for header units (since they are nominally anonymous).
-	clang-cl /std:c++20 /clang:-fmodule-file=hello.pcm @modules.obj main.cpp /Fe:hello.exe $(CXXFLAGS)
+	clang-cl /std:c++20 -fmodule-file=hello.pcm -fmodule-file=iostream.pcm main.cpp /Fe:hello.exe $(CXXFLAGS)
 
 clean:
 	-rm  *.pcm *.obj *.exe

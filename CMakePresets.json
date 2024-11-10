@@ -45,8 +45,8 @@
       }
     },
     {
-      "name": "x-clang-cl",
-      "inherits": "clang-cl",
+      "name": "x-clang-win32",
+      "inherits": "clang",
       "cacheVariables": {
         "CMAKE_C_COMPILER_TARGET": "x86_64-pc-windows-msvc",
         "CMAKE_CXX_COMPILER_TARGET": "x86_64-pc-windows-msvc",
@@ -56,9 +56,8 @@
         "CMAKE_CROSSCOMPILING_EMULATOR": "env;WINEDEBUG=-all;wine"
       },
       "environment": {
-        "CFLAGS": "-winsysroot /opt/msvc $penv{CFLAGS}",
-        "CXXFLAGS": "-winsysroot /opt/msvc $penv{CXXFLAGS}",
-        "LDFLAGS": "-winsysroot:/opt/msvc $penv{LDFLAGS}"
+        "CFLAGS": "-Xmicrosoft-windows-sys-root /opt/msvc $penv{CFLAGS}",
+        "CXXFLAGS": "-Xmicrosoft-windows-sys-root /opt/msvc $penv{CXXFLAGS}"
       },
       "condition": {
         "string": "${hostSystemName}",
@@ -66,6 +65,15 @@
         "list" : [
           "Windows"
         ]
+      }
+    },
+    {
+      "name": "x-clang-cl",
+      "inherits": [ "clang-cl", "x-clang-win32" ],
+      "environment": {
+        "CFLAGS": "-winsysroot /opt/msvc $penv{CFLAGS}",
+        "CXXFLAGS": "-winsysroot /opt/msvc $penv{CXXFLAGS}",
+        "LDFLAGS": "-winsysroot:/opt/msvc $penv{LDFLAGS}"
       }
     },
     {

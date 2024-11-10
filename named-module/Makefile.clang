@@ -2,16 +2,16 @@
 # BMI: Built Module Interface
 
 default:
-	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. hello.cppm main.cpp -o hello.exe
+	clang++ -std=c++20 -fmodule-output -fprebuilt-module-path=. hello.cppm main.cpp -o hello.exe $(CXXFLAGS)
 
 hello.o hello.pcm: hello.cppm
-	clang++ -std=c++20 -fmodule-output -c hello.cppm
+	clang++ -std=c++20 -fmodule-output -c hello.cppm $(CXXFLAGS)
 
 main.o: main.cpp hello.pcm
-	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp
+	clang++ -std=c++20 -fprebuilt-module-path=. -c main.cpp $(CXXFLAGS)
 
 hello.exe: main.o hello.o
-	clang++ main.o hello.o -o hello.exe
+	clang++ main.o hello.o -o hello.exe $(CXXFLAGS)
 
 clean:
 	-rm  *.pcm *.o *.exe
