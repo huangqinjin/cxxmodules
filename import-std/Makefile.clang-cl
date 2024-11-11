@@ -1,0 +1,11 @@
+hello.exe: main.cpp std.obj std.pcm
+	clang-cl /EHsc /std:c++latest -fprebuilt-module-path=. -D__cpp_lib_modules=202207L main.cpp std.obj /Fe:hello $(CXXFLAGS)
+
+std.obj std.pcm:
+	clang-cl /EHsc /std:c++latest -Wno-reserved-module-identifier -Wno-include-angled-in-module-purview \
+	-fprebuilt-module-path=. -fmodule-output=std.pcm \
+	-c -x c++-module $(CXXFLAGS) -- "$(VCTOOLSINSTALLDIR)/modules/std.ixx"
+
+clean:
+	-del *.pcm *.obj *.exe
+	-rm  *.pcm *.obj *.exe

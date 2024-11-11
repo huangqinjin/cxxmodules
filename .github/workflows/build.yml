@@ -55,13 +55,13 @@ jobs:
         run: cmake -P workflow.cmake -- clang
 
       - name: clang-win32
-        run: make clang-win32 CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
+        run: make clang-win32 VCTOOLSINSTALLDIR=/opt/msvc CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: cmake x-clang-win32
         run: cmake -P workflow.cmake -- x-clang-win32
 
       - name: clang-cl
-        run: make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
+        run: make clang-cl VCTOOLSINSTALLDIR=/opt/msvc CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: gcc snapshot
         continue-on-error: true
@@ -96,7 +96,7 @@ jobs:
         run: |
           export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
           export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
-          make clang-win32 CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
+          make clang-win32 VCTOOLSINSTALLDIR=/opt/msvc CXXFLAGS="-Xmicrosoft-windows-sys-root /opt/msvc -fuse-ld=lld -target x86_64-pc-windows-msvc" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: cmake x-clang-win32 trunk
         continue-on-error: true
@@ -110,7 +110,7 @@ jobs:
         run: |
           export PATH=/opt/compiler-explorer/clang-trunk/bin:$PATH
           export LD_LIBRARY_PATH=$(dirname $(clang -print-file-name=libc++.so)):$LD_LIBRARY_PATH
-          make clang-cl CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
+          make clang-cl VCTOOLSINSTALLDIR=/opt/msvc CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
 
       - name: msvc-wine
         run: PATH=/opt/msvc/bin/x64:$PATH make msvc LAUNCHER="WINEDEBUG=-all wine " VCTOOLSINSTALLDIR=/opt/msvc
