@@ -12,5 +12,5 @@ std.cppm.o:
 	-printf `$(CLANG_DIR_CMD)`$(STD_CPPM_LOC) >> std.cppm.o
 
 clean:
-	-rm  *.pcm *.o *.exe
-	-del *.pcm *.o *.exe
+	-rm  *.pcm *.o *.exe 2>&1 | exit
+	-del *.pcm *.o *.exe 2>&1 | exit

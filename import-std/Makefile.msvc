@@ -2,5 +2,5 @@ hello.exe: main.cpp
 	cl /nologo /EHsc /std:c++latest "$(VCTOOLSINSTALLDIR)/modules/std.ixx" main.cpp /Fe:hello
 
 clean:
-	-del *.ifc *.obj *.exe
-	-rm  *.ifc *.obj *.exe
+	-del *.ifc *.obj *.exe 2>&1 | exit
+	-rm  *.ifc *.obj *.exe 2>&1 | exit

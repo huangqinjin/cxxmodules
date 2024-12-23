@@ -20,5 +20,5 @@ hello.exe: main.o hello.o interface.o internal.o
 	clang++ main.o hello.o interface.o internal.o -o hello.exe $(CXXFLAGS)
 
 clean:
-	-rm  *.pcm *.o *.exe
-	-del *.pcm *.o *.exe
+	-rm  *.pcm *.o *.exe 2>&1 | exit
+	-del *.pcm *.o *.exe 2>&1 | exit

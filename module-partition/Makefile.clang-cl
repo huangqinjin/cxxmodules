@@ -20,5 +20,5 @@ hello.exe: main.obj hello.obj interface.obj internal.obj
 	clang-cl main.obj hello.obj interface.obj internal.obj /Fe:hello.exe $(CXXFLAGS)
 
 clean:
-	-rm  *.pcm *.obj *.exe
-	-del *.pcm *.obj *.exe
+	-rm  *.pcm *.obj *.exe 2>&1 | exit
+	-del *.pcm *.obj *.exe 2>&1 | exit

@@ -11,6 +11,6 @@ hello.dll hello.lib hello.pcm: hello.ixx hello.hpp impl.cpp
 	-x c++-module hello.ixx -x c++ impl.cpp -o hello.dll $(CXXFLAGS)
 
 clean:
-	-rm  *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
-	-del *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb
+	-rm  *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb 2>&1 | exit
+	-del *.pcm *.o *.obj *.exe *.exp *.lib *.dll *.pdb 2>&1 | exit
 

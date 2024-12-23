@@ -7,5 +7,5 @@ std.obj std.pcm:
 	-c -x c++-module $(CXXFLAGS) -- "$(VCTOOLSINSTALLDIR)/modules/std.ixx"
 
 clean:
-	-del *.pcm *.obj *.exe
-	-rm  *.pcm *.obj *.exe
+	-del *.pcm *.obj *.exe 2>&1 | exit
+	-rm  *.pcm *.obj *.exe 2>&1 | exit

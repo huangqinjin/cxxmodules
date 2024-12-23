@@ -7,6 +7,6 @@ libhello.so hello.pcm: hello.ixx hello.hpp impl.cpp
 	-x c++-module hello.ixx -x c++ impl.cpp -o libhello.so
 
 clean:
-	-rm  *.pcm *.o *.exe *.so
-	-del *.pcm *.o *.exe *.so
+	-rm  *.pcm *.o *.exe *.so 2>&1 | exit
+	-del *.pcm *.o *.exe *.so 2>&1 | exit
 

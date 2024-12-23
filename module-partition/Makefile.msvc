@@ -16,5 +16,5 @@ hello.exe: main.obj hello.obj interface.obj internal.obj
 	cl /nologo main.obj hello.obj interface.obj internal.obj /Fe:hello
 
 clean:
-	-del *.ifc *.obj *.exe
-	-rm  *.ifc *.obj *.exe
+	-del *.ifc *.obj *.exe 2>&1 | exit
+	-rm  *.ifc *.obj *.exe 2>&1 | exit

@@ -9,6 +9,6 @@ hello.dll hello.lib hello.pcm: hello.ixx
 	-x c++-module hello.ixx -x c++ impl.cpp $(CXXFLAGS) /Zi /link /PDB:hello.dll.pdb
 
 clean:
-	-rm  *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb
-	-del *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb
+	-rm  *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb 2>&1 | exit
+	-del *.pcm *.obj *.exe *.exp *.lib *.dll *.pdb 2>&1 | exit
 
