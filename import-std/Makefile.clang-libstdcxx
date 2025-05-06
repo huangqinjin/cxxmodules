@@ -1,0 +1,11 @@
+# https://github.com/llvm/llvm-project/issues/71364
+
+hello.exe: main.cpp std.o std.pcm
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fprebuilt-module-path=. -D__cpp_modules=201907L main.cpp std.o -o hello.exe
+
+std.o std.pcm: std.cppm
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fmodule-output -c std.cppm -Wno-reserved-module-identifier
+
+clean:
+	-rm  *.pcm *.o *.exe 2>&1 | exit
+	-del *.pcm *.o *.exe 2>&1 | exit

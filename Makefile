@@ -12,7 +12,8 @@ clang: \
 	module-impl/clang \
 	header-unit/clang \
 	header-unit/clang-libcxx \
-	import-std/clang \
+	import-std/clang-libstdcxx \
+	import-std/clang-libcxx \
 	shared-lib/clang \
 
 clang-cl: \
@@ -36,7 +37,7 @@ clang-mingw: \
 	module-partition/clang \
 	module-impl/clang \
 	header-unit/clang-libcxx \
-	import-std/clang \
+	import-std/clang-libcxx \
 	shared-lib/clang-mingw \
 
 gcc: \
@@ -44,6 +45,7 @@ gcc: \
 	module-partition/gcc \
 	module-impl/gcc \
 	header-unit/gcc \
+	import-std/gcc \
 	shared-lib/gcc \
 
 TARGETS1 = \
@@ -56,9 +58,11 @@ TARGETS1 = \
 	header-unit/clang-cl \
 	header-unit/gcc \
 	import-std/msvc \
-	import-std/clang \
+	import-std/clang-libstdcxx \
+	import-std/clang-libcxx \
 	import-std/clang-win32 \
 	import-std/clang-cl \
+	import-std/gcc \
 	shared-lib/msvc \
 	shared-lib/clang \
 	shared-lib/clang-win32 \

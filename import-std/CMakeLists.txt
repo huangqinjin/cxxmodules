@@ -61,3 +61,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_compile_options(${PROJECT_NAME} PRIVATE -Wno-reserved-module-identifier)
     endif()
 endif()
+
+# https://gcc.gnu.org/gcc-14/changes.html#libstdcxx
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND MINGW)
+    target_link_libraries(${PROJECT_NAME} PRIVATE stdc++exp)
+endif()

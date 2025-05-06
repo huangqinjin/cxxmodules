@@ -1,0 +1,7 @@
+# https://gcc.gnu.org/gcc-14/changes.html#libstdcxx
+
+hello.exe: main.cpp
+	g++ -std=c++23 -fmodules -fsearch-include-path bits/std.cc main.cpp -o hello.exe -lstdc++exp
+
+clean:
+	rm -rf *.gcm gcm.* *.o *.exe
