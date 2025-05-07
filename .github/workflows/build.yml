@@ -21,6 +21,9 @@ jobs:
           ln -s /usr/bin/g++-15 /usr/local/bin/g++
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
+          curl -o cmake.sh -fsSL https://github.com/Kitware/CMake/releases/download/v4.0.2/cmake-4.0.2-linux-x86_64.sh
+          chmod +x cmake.sh && ./cmake.sh --skip-license --prefix=/usr/local
+
       - name: Checkout compiler-explorer/infra
         uses: actions/checkout@v4
         with:
@@ -139,6 +142,9 @@ jobs:
           rename %1 %~nx1.bat
           %1.bat
           "@
+
+          Invoke-WebRequest -OutFile cmake.msi https://github.com/Kitware/CMake/releases/download/v4.0.2/cmake-4.0.2-windows-x86_64.msi
+          Start-Process -NoNewWindow -Wait msiexec "/i cmake.msi /qn"
 
       - uses: msys2/setup-msys2@v2
         with:
