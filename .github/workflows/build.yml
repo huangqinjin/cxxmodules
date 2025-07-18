@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          zypper -n in wine-wow64 msitools awk cmake ninja make gcc15-c++ llvm clang lld libc++-devel
+          zypper -n in git wine-wow64 msitools awk cmake ninja make gcc15-c++ llvm clang lld libc++-devel
           ln -s /usr/bin/gcc-15 /usr/local/bin/gcc
           ln -s /usr/bin/g++-15 /usr/local/bin/g++
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
