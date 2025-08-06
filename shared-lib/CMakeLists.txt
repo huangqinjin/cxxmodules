@@ -30,7 +30,7 @@ target_sources(hello
 # https://github.com/mstorsjo/llvm-mingw/issues/421
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MINGW)
   # -fms-extensions is disabled by default for MinGW
-  target_link_options(hello PRIVATE LINKER:-Xlink=-export:_ZGIW5hello)
+  target_compile_options(hello PUBLIC -fms-extensions)
 endif()
 
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105397

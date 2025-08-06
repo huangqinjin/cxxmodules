@@ -63,6 +63,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 
 # https://gcc.gnu.org/gcc-14/changes.html#libstdcxx
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND MINGW)
-    target_link_libraries(${PROJECT_NAME} PRIVATE stdc++exp)
+if(MINGW)
+    include(CheckCXXSymbolExists)
+    check_cxx_symbol_exists(__GLIBCXX__ version libstdcxx)
+    if(libstdcxx)
+        target_link_libraries(${PROJECT_NAME} PRIVATE stdc++exp)
+    endif()
 endif()
