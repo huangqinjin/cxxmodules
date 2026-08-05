@@ -139,7 +139,7 @@ jobs:
           Add-Content $env:GITHUB_PATH C:\
           Set-Content C:\vsdevcmd.cmd @"
           @echo off
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           rename %1 %~nx1.bat
           %1.bat
           "@
