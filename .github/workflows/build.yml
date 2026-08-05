@@ -16,9 +16,7 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          zypper -n in git wine-wow64 msitools awk cmake ninja make gcc15-c++ llvm clang lld libc++-devel
-          ln -s /usr/bin/gcc-15 /usr/local/bin/gcc
-          ln -s /usr/bin/g++-15 /usr/local/bin/g++
+          zypper -n in git wine-wow64 msitools awk cmake ninja make gcc-c++ llvm clang lld libc++-devel
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
           curl -o cmake.sh -fsSL https://github.com/Kitware/CMake/releases/download/v4.1.0/cmake-4.1.0-linux-x86_64.sh
