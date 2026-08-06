@@ -1,10 +1,12 @@
-# https://github.com/llvm/llvm-project/issues/71364
-
 hello.exe: main.cpp std.o std.pcm
-	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fprebuilt-module-path=. -D__cpp_modules=201907L main.cpp std.o -o hello.exe
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fprebuilt-module-path=. main.cpp std.o -o hello.exe
+
+# include a module unit no longer work:
+#   'module;' introducing a global module fragment can appear only at the start of the translation unit
 
 std.o std.pcm: std.cppm
-	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fmodule-output -c std.cppm -Wno-reserved-module-identifier
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -x c++-module -E -P std.cppm -o std-cpp.o
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -x c++-module -fmodule-output -c std-cpp.o -o std.o -w -Wno-reserved-module-identifier
 
 clean:
 	-rm  *.pcm *.o *.exe 2>&1 | exit
