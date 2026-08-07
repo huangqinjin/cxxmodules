@@ -19,7 +19,7 @@ jobs:
           zypper -n in git wine-wow64 msitools awk cmake ninja make gcc-c++ llvm clang lld libc++-devel
           mkdir $HOME/.wine  # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
 
-          curl -o cmake.sh -fsSL https://github.com/Kitware/CMake/releases/download/v4.1.0/cmake-4.1.0-linux-x86_64.sh
+          curl -o cmake.sh -fsSL https://github.com/Kitware/CMake/releases/download/v4.4.2/cmake-4.4.2-linux-x86_64.sh
           chmod +x cmake.sh && ./cmake.sh --skip-license --prefix=/usr/local
 
       - name: Checkout compiler-explorer/infra
@@ -68,6 +68,9 @@ jobs:
 
       - name: clang-cl
         run: make clang-cl VCTOOLSINSTALLDIR=/opt/msvc CXXFLAGS="-winsysroot /opt/msvc -fuse-ld=lld" LAUNCHER="WINEDEBUG=-all wine "
+
+      - name: cmake x-clang-cl
+        run: cmake -P workflow.cmake -- x-clang-cl
 
       - name: gcc snapshot
         continue-on-error: true
@@ -144,7 +147,7 @@ jobs:
           %1.bat
           "@
 
-          Invoke-WebRequest -OutFile cmake.msi https://github.com/Kitware/CMake/releases/download/v4.1.0/cmake-4.1.0-windows-x86_64.msi
+          Invoke-WebRequest -OutFile cmake.msi https://github.com/Kitware/CMake/releases/download/v4.4.2/cmake-4.4.2-windows-x86_64.msi
           Start-Process -NoNewWindow -Wait msiexec "/i cmake.msi /qn"
 
       - uses: msys2/setup-msys2@v2
@@ -181,6 +184,9 @@ jobs:
       - name: clang-cl
         shell: vsdevcmd {0}
         run: nmake -nologo clang-cl
+
+      - name: cmake clang-cl
+        run: cmake -P workflow.cmake -- clang-cl
 
       - name: mingw-ucrt64
         shell: msys2 {0}
