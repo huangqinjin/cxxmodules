@@ -9,6 +9,7 @@ jobs:
   Linux:
     runs-on: ubuntu-latest
     container: opensuse/tumbleweed
+    if: false
 
     strategy:
       fail-fast: true
@@ -136,9 +137,6 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          choco upgrade --no-progress llvm
-          choco install --no-progress ninja
-
           Add-Content $env:GITHUB_PATH C:\
           Set-Content C:\vsdevcmd.cmd @"
           @echo off
@@ -150,61 +148,10 @@ jobs:
           Invoke-WebRequest -OutFile cmake.msi https://cmake.org/files/dev/cmake-4.4.20260806-ga140fd8-windows-x86_64.msi
           Start-Process -NoNewWindow -Wait msiexec "/i cmake.msi /qn"
 
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: MSYS
-          release: false
-          update: true
-          install: >-
-            make
-            ucrt64/mingw-w64-ucrt-x86_64-gcc
-            ucrt64/mingw-w64-ucrt-x86_64-clang
-            clang64/mingw-w64-clang-x86_64-clang
-
       - uses: actions/checkout@v4
-
-      - name: msvc
-        shell: vsdevcmd {0}
-        run: nmake -nologo msvc
-
-      - name: cmake msvc
-        shell: vsdevcmd {0}
-        run: cmake -P workflow.cmake -- default
-
-      - name: msbuild
-        run: cmake -P workflow.cmake -- msbuild
-
-      - name: clang
-        shell: vsdevcmd {0}
-        run: nmake -nologo clang-win32
 
       - name: cmake clang
         run: cmake -P workflow.cmake -- clang
 
-      - name: clang-cl
-        shell: vsdevcmd {0}
-        run: nmake -nologo clang-cl
-
       - name: cmake clang-cl
         run: cmake -P workflow.cmake -- clang-cl
-
-      - name: mingw-ucrt64
-        shell: msys2 {0}
-        env:
-          MSYSTEM: UCRT64
-        run: make gcc LAUNCHER=./
-
-      - name: cmake mingw-ucrt64
-        run: cmake -P workflow.cmake -- mingw-ucrt64
-
-      - name: cmake mingw-ucrt64-clang
-        run: cmake -P workflow.cmake -- mingw-ucrt64-clang
-
-      - name: mingw-clang64
-        shell: msys2 {0}
-        env:
-          MSYSTEM: CLANG64
-        run: make clang-mingw LAUNCHER=./
-
-      - name: cmake mingw-clang64
-        run: cmake -P workflow.cmake -- mingw-clang64

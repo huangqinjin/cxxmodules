@@ -32,7 +32,6 @@
         "CMAKE_CXX_COMPILER": "clang++"
       },
       "environment": {
-        "CXXFLAGS": "--start-no-unused-arguments -stdlib=libc++ --end-no-unused-arguments $penv{CXXFLAGS}"
       }
     },
     {
