@@ -9,7 +9,6 @@ jobs:
   Linux:
     runs-on: ubuntu-latest
     container: opensuse/tumbleweed
-    if: false
 
     strategy:
       fail-fast: true
@@ -22,6 +21,10 @@ jobs:
 
           curl -o cmake.sh -fsSL https://cmake.org/files/dev/cmake-4.4.20260806-ga140fd8-linux-x86_64.sh
           chmod +x cmake.sh && ./cmake.sh --skip-license --prefix=/usr/local
+
+          curl -o /tmp/26761.patch -fsSL https://gitlab.kitware.com/cmake/cmake/-/commit/ddc2be95a7f4a539a9d973bb128062a610a99e39.patch
+          cd /usr/local/share/cmake-4.4
+          git --work-tree=. apply /tmp/26761.patch
 
       - name: Checkout compiler-explorer/infra
         uses: actions/checkout@v4
@@ -147,6 +150,10 @@ jobs:
 
           Invoke-WebRequest -OutFile cmake.msi https://cmake.org/files/dev/cmake-4.4.20260806-ga140fd8-windows-x86_64.msi
           Start-Process -NoNewWindow -Wait msiexec "/i cmake.msi /qn"
+
+          Invoke-WebRequest -OutFile C:\26761.patch https://gitlab.kitware.com/cmake/cmake/-/commit/ddc2be95a7f4a539a9d973bb128062a610a99e39.patch
+          cd "C:\Program Files\CMake\share\cmake-4.4"
+          git --work-tree=. apply C:\26761.patch
 
       - uses: actions/checkout@v4
 
