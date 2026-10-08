@@ -11,7 +11,6 @@
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/cmake-build-${presetName}",
       "cacheVariables": {
-        "CMAKE_EXPERIMENTAL_CXX_IMPORT_STD": "f35a9ac6-8463-4d38-8eec-5d6008153e7d",
         "CMAKE_CXX_STANDARD": "23",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
