@@ -1,12 +1,8 @@
 hello.exe: main.cpp std.o std.pcm
 	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -fprebuilt-module-path=. main.cpp std.o -o hello.exe
 
-# include a module unit no longer work:
-#   'module;' introducing a global module fragment can appear only at the start of the translation unit
-
-std.o std.pcm: std.cppm
-	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -x c++-module -E -P std.cppm -o std-cpp.o
-	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -x c++-module -fmodule-output -c std-cpp.o -o std.o -w -Wno-reserved-module-identifier
+std.o std.pcm:
+	$(PREFIX)clang++ -stdlib=libstdc++ -std=c++23 -x c++-module -fmodule-output -c /usr/include/c++/16/bits/std.cc -Wno-reserved-module-identifier
 
 clean:
 	-rm  *.pcm *.o *.exe 2>&1 | exit

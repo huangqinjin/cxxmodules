@@ -7,10 +7,6 @@ export module hello;
 
 export void hello();
 
-#if defined(_MSC_VER) || defined(__clang__)
-module :private;
-#endif
-
 void hello()
 {
     std::source_location loc = std::source_location::current();
